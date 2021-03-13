@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.onreg01.locationtracker.databinding.ItemLogBinding
 import com.onreg01.locationtracker.db.Log
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 class LogAdapter : ListAdapter<Log, LogViewHolder>(DiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LogViewHolder {
@@ -37,7 +39,10 @@ object DiffCallback : DiffUtil.ItemCallback<Log>() {
 
 class LogViewHolder(val binding: ItemLogBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    private val formatter = DateTimeFormatter.ofPattern("dd.MM HH:mm:ss")
+    private val formatter =
+        DateTimeFormatter.ofPattern("dd.MM HH:mm:ss")
+            .withLocale(Locale.getDefault())
+            .withZone(ZoneId.systemDefault())
 
     fun bind(log: Log) {
         binding.date.text = formatter.format(log.time)
